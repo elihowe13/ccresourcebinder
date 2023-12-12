@@ -46,4 +46,4 @@ const dispNextLink = (pageIndex == maxPageIndex) ? 'style="display:none"':''; %>
     </div>
     <% } %>
 </div>
-<p id="results-bottom-label"><a class="previous-link" href="#" <%- dispPrevLink %> onclick="changePage(event, false)">&lt; previous</a>Showing Results <%= resultsStart %> - <%= resultsEnd %> of <%= resultsCount %><a class="next-link" href="#" <%- dispNextLink %> onclick="changePage(event, false)">next &gt;</a> </p>
+<p id="results-bottom-label"><a class="previous-link" href="#" <%- dispPrevLink %> onclick="changePage(event, false)">&lt; previous</a>Showing Results <%= resultsStart %> - <%= resultsEnd %> of <%= resultsCount %><a class="next-link" href="#" <%- dispNextLink %> onclick="changePage(event, true)">next &gt;</a> </p>
