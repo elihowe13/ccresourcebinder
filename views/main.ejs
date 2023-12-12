@@ -1,0 +1,68 @@
+
+<!-- main.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Page</title>
+    <base target="_top">
+    <link rel="stylesheet" href="css/styles.css" type="text/css">
+</head>
+<body>
+  <div class="container">
+    <div class="header-links">
+      <a href="#" id="login-link" onclick="login(event)">Login</a>
+      <span>&nbsp;|&nbsp;</span>
+      <a href="#" id="suggest-new-link" onclick="openSuggestionModal(event)">Suggest New Resource</a>
+    </div>
+    <div class="title-container">
+      <h1>CLE Resource Binder</h1>
+      <div class="search-box">
+        <input type="text" id="search-input" onkeydown="if (event.key === 'Enter') submitFilters(true)" placeholder="Search...">
+        <button id="search-button" onclick="submitFilters(true)">Search</button>
+      </div>
+    </div>
+
+    <div class="body-container">
+        <div id="left-panel" class="enable-reset">
+          <%- leftPanel %>
+        </div>
+        <div id="right-panel">
+          <%- rightPanel %>
+        </div>
+    </div>
+  </div>
+  <div id="update-modal" class="overlay">
+    <div class="modal">
+      <h2>Request Update/Correction</h2>
+      <p id="update-title" class="form-description">Resource Info</p>
+      <p class="form-label">Please describe what needs to be updated or corrected.</p>
+      <textarea id="update-text" style="height:100px" maxlength="300"></textarea>
+      <div class="buttons">
+          <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+          <button type="button" class="btn btn-submit" onclick="submitUpdate()">Submit</button>
+      </div>
+    </div>
+  </div>
+  <div id="suggestion-modal" class="overlay">
+    <div class="modal">
+      <h2>Suggest a New Resource for CLE</h2>
+      <p class="form-description">This form is where volunteers and staff can suggest a new resource that may be helpful for callers. Submit here, and your suggestion will be reviewed for addition by the system administrator.</p>
+      <p class="form-label">What is the name of the resource?</p>
+      <textarea type="text" style="height:25px" id="suggestion-title" maxlength="100"></textarea>
+      <p class="form-label">What county or counties does it serve?</p>
+      <textarea type="text" style="height:25px" id="suggestion-county" maxlength="100"></textarea>
+      <p class="form-label">Briefly describe what services or information are provided there.</p>
+      <textarea type="text" style="height:100px" id="suggestion-description" maxlength="500"></textarea>
+      <p class="form-label">List the website, phone, and/or address. Please make a note if there are multiple locations.</p>
+      <textarea type="text" style="height:60px" id="suggestion-contact" maxlength="300"></textarea>
+      <div class="buttons">
+          <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+          <button type="button" class="btn btn-submit" onclick="submitSuggestion()">Submit</button>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="js/scripts.js"></script>
+</html>

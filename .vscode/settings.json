@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/061c86f4-69f3-450a-add0-d1808674c28d/resourceGroups/CC_Resource_Binder/providers/Microsoft.Web/sites/ccresourcebinder",
+    "appService.deploySubpath": "views"
+}
