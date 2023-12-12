@@ -19,7 +19,9 @@ function loadLeftJs() {
     }
 }
 
-function changePage(direction) {
+function changePage(e, direction) {
+
+    e.preventDefault();
 
     pageIndex = direction ? pageIndex + 1 : pageIndex - 1;
 

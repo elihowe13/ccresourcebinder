@@ -4,8 +4,8 @@ const dispNextLink = (pageIndex == maxPageIndex) ? 'style="display:none"':''; %>
 
 <h2 id="results-top-label" class="header-container">
     <span class="left-text">Showing Results <%= resultsStart %> - <%= resultsEnd %> of <%= resultsCount %></span>
-    <a class="previous-link" href="#" <%- dispPrevLink %> onclick="changePage(false)">&lt; previous</a>
-    <a class="next-link" href="#" <%- dispNextLink %> onclick="changePage(true)">next &gt;</a>
+    <a class="previous-link" href="#" <%- dispPrevLink %> onclick="changePage(event, false)">&lt; previous</a>
+    <a class="next-link" href="#" <%- dispNextLink %> onclick="changePage(event, true)">next &gt;</a>
 </h2>
 <div id="search-results">
     <% for (resultItem of displayedResults) { 
@@ -46,4 +46,4 @@ const dispNextLink = (pageIndex == maxPageIndex) ? 'style="display:none"':''; %>
     </div>
     <% } %>
 </div>
-<p id="results-bottom-label"><a class="previous-link" href="#" <%- dispPrevLink %> onclick="changePage(false)">&lt; previous</a>Showing Results <%= resultsStart %> - <%= resultsEnd %> of <%= resultsCount %><a class="next-link" href="#" <%- dispNextLink %> onclick="changePage(false)">next &gt;</a> </p>
+<p id="results-bottom-label"><a class="previous-link" href="#" <%- dispPrevLink %> onclick="changePage(event, false)">&lt; previous</a>Showing Results <%= resultsStart %> - <%= resultsEnd %> of <%= resultsCount %><a class="next-link" href="#" <%- dispNextLink %> onclick="changePage(event, false)">next &gt;</a> </p>
