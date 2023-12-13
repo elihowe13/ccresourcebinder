@@ -16,7 +16,7 @@ app.post('/change-page', async (req, res) => {
     const state = req.body;
     const criteria = state[0];
     const searchTerms = state[1];
-    let pageIndex = state[3];
+    let pageIndex = state[4];
     
     const fullArray = functions.getResourceList(criteria, searchTerms); 
     const resourceList = fullArray.slice(1);
@@ -51,11 +51,41 @@ app.post('/submit-filters', async (req, res) => {
     }
 })
 
+app.post('/suggest-update', async (req, res) => {
+    try {
+
+        const data = req.body;
+        data["timeStamp"] = new Date();
+
+        result = await functions.suggestUpdate(data);
+        res.json(result);
+
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+    }
+})
+
+app.post('/suggest-new-resource', async (req, res) => {
+    try {
+
+        const data = req.body;
+        data["timeStamp"] = new Date();
+
+        result = await functions.suggestNewResource(data);
+        res.json(result);
+
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+    }
+})
+
 app.get('/', async (req, res) => {
     try {
 
         const fullArray = functions.getResourceList({}); // get the full array with no filter applied 
-        const state = [{},"",[true],0]; // Initial page state empty criteria, empty search, filter 0 expanded
+        const state = [{},"",[],[true],0]; // Initial page state empty criteria, empty search, filter 0 expanded
         const filterData = fullArray[0];
         const resourceList = fullArray.slice(1);
 

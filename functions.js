@@ -61,7 +61,6 @@ function makeResourceList() {
 // filter the passed dataset using the passed criteria
 function getResourceList(criteria, searchTerms = undefined) {
 
-
     const rawData = fs.readFileSync('static/assets/resource_list.json');
     const jsonData = JSON.parse(rawData);
     const filters = jsonData[0];
@@ -125,33 +124,42 @@ async function loadRightPanel(resourceList, pageIndex) {
 
     const maxPageIndex = chunkedData.length - 1;
 
-    if ( pageIndex < 0 ) {
+    // condition for no results 
+    if ( chunkedData.length == 0 ) {
       pageIndex = 0;
-      response = { "pageIndex": pageIndex }
-    } else if ( pageIndex > maxPageIndex ) {
+      html = '<h2 id="results-top-label" class="header-container reveal-element">No Results Found...</h2>';
+      response = { pageIndex, html };
+    }
+    // condition for errant request page index below minimum bound
+    else if ( pageIndex < 0 ) {
+      pageIndex = 0;
+      response = { pageIndex };
+    } 
+    // condition for errant request page index above maximum bound
+    else if ( pageIndex > maxPageIndex ) {
       pageIndex = maxPageIndex;
-      response = { "pageIndex": pageIndex }
-    } else {
+      response = { pageIndex };
+    } 
+    // standard condition 
+    else {
       const displayedResults = chunkedData[pageIndex];
       const resultsCount = resourceList.length;
       const resultsStart = (pageIndex * 25) + 1;
       const resultsEnd = resultsStart + displayedResults.length - 1;
       const html = await ejs.renderFile('views/right_panel.ejs', { displayedResults, resultsStart, resultsEnd, resultsCount, pageIndex, maxPageIndex })
 
-      response = {
-        "pageIndex": pageIndex,
-        "html": html
-      }
-
+      response = { pageIndex, html }
     }
+
     return response;
 }
 
 async function loadLeftPanel(filters, state) {
     const criteria = state[0];
     const searchTerms = state[1]
-    const expanded = state[2];
-    const html = await ejs.renderFile('views/left_panel.ejs', { filters, criteria, searchTerms, expanded });
+    const selected = state[2]
+    const expanded = state[3];
+    const html = await ejs.renderFile('views/left_panel.ejs', { filters, criteria, searchTerms, selected, expanded });
 
     return html;
 }
@@ -166,6 +174,34 @@ function arraysIntersect(arr1, arr2) {
       }
     }
     return false; // No matching elements found, arrays do not intersect
+}
+
+async function suggestUpdate(data) {
+
+  // access, parse, and modify data from resource updates file
+  const resourceUpdates = fs.readFileSync('static/assets/resource_updates.json');
+  const updatesJson = JSON.parse(resourceUpdates);
+  updatesJson.push(data);
+
+  // submit changes and save file
+  const submissionData = JSON.stringify(updatesJson, null, 2);
+  fs.writeFileSync('static/assets/resource_updates.json', submissionData);
+
+  return true;
+}
+
+async function suggestNewResource(data) {
+
+  // access, parse, and modify data from resource suggestions file
+  const newResourceSuggestion = fs.readFileSync('static/assets/resource_suggestions.json');
+  const newResourceJson = JSON.parse(newResourceSuggestion);
+  newResourceJson.push(data);
+
+  // submit changes and save file
+  const submissionData = JSON.stringify(newResourceJson, null, 2);
+  fs.writeFileSync('static/assets/resource_suggestions.json', submissionData);
+
+  return true;
 }
 
 // takes an array of objects, returns all unique values across all objects for a given key
@@ -196,5 +232,7 @@ module.exports = {
     loadLeftPanel,
     loadRightPanel,
     arraysIntersect,
-    getUniques
+    getUniques,
+    suggestUpdate,
+    suggestNewResource
 }

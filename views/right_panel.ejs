@@ -1,13 +1,15 @@
-
-<% const dispPrevLink = (pageIndex == 0) ? 'style="display:none"':'';
-const dispNextLink = (pageIndex == maxPageIndex) ? 'style="display:none"':''; %>
+<%
+const hidePrevLink = (pageIndex == 0) ? "hide-element":"";
+const hideNextLink = (pageIndex == maxPageIndex) ? "hide-element":""; 
+%>
 
 <h2 id="results-top-label" class="header-container">
-    <span class="left-text">Showing Results <%= resultsStart %> - <%= resultsEnd %> of <%= resultsCount %></span>
-    <a class="previous-link" href="#" <%- dispPrevLink %> onclick="changePage(event, false)">&lt; previous</a>
-    <a class="next-link" href="#" <%- dispNextLink %> onclick="changePage(event, true)">next &gt;</a>
+    <span>Showing Results&nbsp;</span>
+    <span class="left-text reveal-element"><%= resultsStart %> - <%= resultsEnd %> of <%= resultsCount %></span>
+    <a class="previous-link <%- hidePrevLink %>" href="#" onclick="changePage(event, false)">&lt; previous</a>
+    <a class="next-link <%- hideNextLink %>" href="#" onclick="changePage(event, true)">next &gt;</a>
 </h2>
-<div id="search-results">
+<div id="search-results" class="reveal-element">
     <% for (resultItem of displayedResults) { 
         const regionTag = (resultItem["City"] == "") ? resultItem["County"] : resultItem["County"] + " - " + resultItem["City"]; %>
     <div class="result-item">
@@ -20,7 +22,7 @@ const dispNextLink = (pageIndex == maxPageIndex) ? 'style="display:none"':''; %>
         <div class="contact-details-container">
             <% for (let i = 1; i < 7; i++) { %>
                 <% if ( resultItem["Label"+i] != "") { %>
-                    <h4 class="editable"><% resultItem["Label"+i] %></h4>
+                    <h4 class="editable"><%= resultItem["Label"+i] %></h4>
                 <% } %>
                 <% if ( resultItem["Phone"+i] != "") { %>
                     <div class="contact-item-inline">
@@ -42,8 +44,8 @@ const dispNextLink = (pageIndex == maxPageIndex) ? 'style="display:none"':''; %>
                 <% } %>
             <% } %>
         </div>
-        <a class="update-link" href="#" onclick="return openUpdateModal('<%= resultItem[`Title`] %>')">report incorrect</a>
+        <a class="update-link" href="#" onclick="openUpdateModal(event)">report incorrect</a>
     </div>
     <% } %>
 </div>
-<p id="results-bottom-label"><a class="previous-link" href="#" <%- dispPrevLink %> onclick="changePage(event, false)">&lt; previous</a>Showing Results <%= resultsStart %> - <%= resultsEnd %> of <%= resultsCount %><a class="next-link" href="#" <%- dispNextLink %> onclick="changePage(event, true)">next &gt;</a> </p>
+<p id="results-bottom-label"><a class="previous-link <%- hidePrevLink %>" href="#" onclick="changePage(event, false)">&lt; previous</a>Showing Results <%= resultsStart %> - <%= resultsEnd %> of <%= resultsCount %><a class="next-link <%- hideNextLink %>" href="#" onclick="changePage(event, true)">next &gt;</a> </p>
