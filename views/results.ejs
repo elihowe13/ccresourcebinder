@@ -1,0 +1,37 @@
+<%_ for (resultItem of displayedResults) { 
+    const regionTag = (resultItem["City"] == "") ? resultItem["County"] : resultItem["County"] + " - " + resultItem["City"]; _%>
+<div class="result-item">
+    <div class="subtitles-container">
+        <p><%= regionTag %></p>
+        <p><%= resultItem["Resource Type"] %></p>
+    </div>
+    <h3 class="resource-title editable"><%= resultItem["Title"] %></h3>
+    <p class="resource-description editable"><%= resultItem["Description"] %></p>
+    <div class="contact-details-container">
+        <%_ for (let i = 1; i < 7; i++) { _%>
+            <%_ if ( resultItem["Label"+i] != "") { _%>
+                <h4 class="editable"><%= resultItem["Label"+i] %></h4>
+            <%_ } _%>
+            <%_ if ( resultItem["Phone"+i] != "") { _%>
+                <div class="contact-item-inline">
+                    <img src="assets/phone.svg" alt="SVG Image">
+                    <p class="editable"><%= resultItem["Phone"+i] %></p>
+                </div>
+            <%_ } _%>
+            <%_ if ( resultItem["Address"+i] != "") { _%>
+                <div class="contact-item-inline">
+                    <img src="assets/pin.svg" alt="SVG Image">
+                    <p class="editable"><%= resultItem["Address"+i] %></p>
+                </div>
+            <%_ } _%>
+            <%_ if ( resultItem["Website"+i] != "") { _%>
+                <div class="contact-item-inline">
+                    <img src="assets/globe.svg" alt="SVG Image">
+                    <a href="<%= resultItem['Website'+i] %>" target="_blank" class="editable"><%= resultItem["Website"+i] %></a>
+                </div>
+            <%_ } _%>
+        <%_ } _%>
+    </div>
+    <a class="update-link" href="#" onclick="openUpdateModal(event)">suggest update/correction</a>
+</div>
+<%_ } _%>

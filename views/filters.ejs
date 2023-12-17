@@ -1,0 +1,19 @@
+<!-- filters.ejs -->
+<%_ for (i = 0; i < categoriesArray.length; i ++) { 
+    const collapsed = (i != 0) ? 'collapsed':'';
+    const category = categoriesArray[i] _%>
+    <div class="filter-field <%= collapsed %>" category="<%= category %>">
+        <div class="subheading-container" onclick="if (event.target.tagName != 'A') {$(event.target).closest('.filter-field').toggleClass('collapsed');}">
+            <h3 class="filter-category"><%= category %></h3>
+            <a href="#" class="reset-link hidden fade-out" onclick="handleReset(event)">(reset)</a>
+            <div class="chevron">&lt;</div>
+        </div>
+        <form id="<%= category %>" class="checkbox-form">
+            <%_ for (let j = 0; j < checkboxesArray[i].length; j++) { 
+                const label = checkboxesArray[i][j];
+                const isChecked = checkedCheckboxes[i][j]; _%>
+                <label><input type="checkbox" class="checkbox"  name="<%= label %>" value="<%= label %>" onchange="submitFilters()" <%- isChecked %>><%= label %></label>
+            <%_ } _%> 
+        </form>
+    </div>
+<%_ } _%>

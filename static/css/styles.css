@@ -6,6 +6,21 @@
     --tags-color: #E0A883;         /* A brighter and slightly more contrasting color for tags */
   }
 
+/* Styles for mobile devices */
+@media (max-width: 600px) {
+  /* Additional mobile-specific styles */
+}
+
+/* Styles for tablets */
+@media (min-width: 601px) and (max-width: 1024px) {
+  /* Additional tablet-specific styles */
+}
+
+/* Styles for desktops */
+@media (min-width: 1025px) {
+  /* Additional desktop-specific styles */
+}
+
 /* Styling for the overlay */
 .overlay {
     display: none;
@@ -179,6 +194,7 @@ body, h2, h3, p {
 /* Styles for the left panel */
 #left-panel {
     flex: 1;
+    width: 30%;
     padding-right: 20px;
     border-right: 1px solid #e1e1e1;
 }
@@ -192,12 +208,22 @@ body, h2, h3, p {
     cursor: pointer;
 }
 
-.hide-element {
-  visibility: hidden;
+.hidden {
+  display: none;
 }
 
-.reveal-element {
-  animation: fadeIn 0.5s ease-in;
+.no-wrap {
+  text-wrap: nowrap;
+}
+
+.fade-out {
+  animation: fadeOut 0.15s ease-out forwards;
+  pointer-events: none;
+}
+
+.fade-in {
+  animation: fadeIn 0.2s ease-in forwards;
+  pointer-events: auto;
 }
 
 @keyframes fadeIn {
@@ -209,8 +235,16 @@ body, h2, h3, p {
   }
 }
 
-#search-terms {
-    display: flex;
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+#search-terms-display {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
@@ -225,7 +259,7 @@ body, h2, h3, p {
   font-weight: bold;
 }
 
-.filter-field.collapsed .checkboxForm {
+.filter-field.collapsed .checkbox-form {
   max-height: 0;
 }
 
@@ -233,20 +267,23 @@ body, h2, h3, p {
   transform: rotate(0deg);
 }
 
-.checkboxForm {
+.checkbox-form {
   overflow: hidden;
   height: auto;
   max-height: 1500px; 
   transition: max-height 0.3s ease;
 }
 
-.checkboxForm label {
+.checkbox-form label {
     display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     margin-bottom: 10px;
     cursor: pointer;
 }
 
-.checkboxForm input[type="checkbox"] {
+.checkbox-form input[type="checkbox"] {
     margin-right: 5px;
 }
 

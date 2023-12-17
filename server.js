@@ -1,5 +1,4 @@
 const express = require('express');
-const fs = require('fs');
 const app = express();
 const functions = require('./functions');
 const bodyParser = require('body-parser');
@@ -14,15 +13,15 @@ app.use(bodyParser.json()); // Middleware for parsing json request bodies
 app.post('/change-page', async (req, res) => {
 
     const state = req.body;
-    const criteria = state[0];
-    const searchTerms = state[1];
-    let pageIndex = state[4];
+    const criteria = state.criteria;
+    const searchTerms = state.searchTerms;
+    const pageIndex = state.pageIndex;
     
     const fullArray = functions.getResourceList(criteria, searchTerms); 
     const resourceList = fullArray.slice(1);
 
     try {
-        const responseData = await functions.loadRightPanel(resourceList, pageIndex);
+        const responseData = await functions.loadResults(resourceList, pageIndex);
         res.json(responseData);
     } catch (error) {
         console.error('Error:', error);
@@ -30,21 +29,20 @@ app.post('/change-page', async (req, res) => {
     }
 })
 
-app.post('/submit-filters', async (req, res) => {
+app.post('/submit-search', async (req, res) => {
     try {
-        const state = req.body;
-        const criteria = state[0];
-        const searchTerms = state[1];
+        const criteria = req.body.criteria;
+        const searchTerms = req.body.searchTerms;
         
         const fullArray = functions.getResourceList(criteria, searchTerms); 
         const filterData = fullArray[0];
         const resourceList = fullArray.slice(1);
 
-        const [leftPanel, { "html": rightPanel }] = await Promise.all([
-            functions.loadLeftPanel(filterData, state),
-            functions.loadRightPanel(resourceList, 0),
+        const [formsArray, { resultsHtml, maxPageIndex, start, end, count }] = await Promise.all([
+            functions.loadFilters(filterData, criteria, true),
+            functions.loadResults(resourceList, 0),
         ]);
-        res.json({leftPanel, rightPanel});
+        res.json({ formsArray, resultsHtml, maxPageIndex, start, end, count });
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal Server Error');
@@ -84,17 +82,17 @@ app.post('/suggest-new-resource', async (req, res) => {
 app.get('/', async (req, res) => {
     try {
 
-        const fullArray = functions.getResourceList({}); // get the full array with no filter applied 
-        const state = [{},"",[],[true],0]; // Initial page state empty criteria, empty search, filter 0 expanded
+        const criteria = {};
+        const fullArray = functions.getResourceList(criteria); // get the full array with no filter applied 
         const filterData = fullArray[0];
         const resourceList = fullArray.slice(1);
 
-        const [leftPanel, { "html": rightPanel }] = await Promise.all([
-            functions.loadLeftPanel(filterData, state),
-            functions.loadRightPanel(resourceList, 0),
+        const [filtersHtml , { resultsHtml, start, end, count } ] = await Promise.all([
+            functions.loadFilters(filterData, criteria),
+            functions.loadResults(resourceList, 0),
         ]);
 
-        res.render('main', { leftPanel, rightPanel, state });
+        res.render('main', { filtersHtml, resultsHtml, start, end, count });
 
     } catch (err) {
         console.error(err);
