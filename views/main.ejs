@@ -1,0 +1,132 @@
+
+<!-- main.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLE Resource Binder</title>
+    <base target="_top">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+</head>
+<body>
+  <div class="container">
+    <div id="menu-button">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="header-links">
+      <%_ if (isAdmin) { _%>
+        <a href="/auth/logout" id="logout-link"><%= user.username %> (logout)</a>
+        <span>&nbsp;|&nbsp;</span>
+        <a href="/admin/dashboard" id="dashboard-link">Dashboard</a>
+        <span>&nbsp;|&nbsp;</span>
+        <a href="#" id="add-new-link" onclick="openAddResourceModal(event)">Add New Resource</a>
+      <% } else { _%>
+        <a href="/auth/login" id="login-link">Login</a>
+        <span>&nbsp;|&nbsp;</span>
+        <a href="#" id="suggest-new-link" onclick="event.preventDefault(); $('#suggestion-modal').fadeIn(300)">Suggest New Resource</a>
+      <%_ } _%>
+    </div>
+    <div class="title-container">
+      <h1>CLE Resource Binder</h1>
+      <div class="search-box">
+        <input type="text" id="search-input" onkeydown="if (event.key === 'Enter') captureSearchTerms(event)" placeholder="Search...">
+        <button id="search-button" class="btn btn-submit" onclick="captureSearchTerms(event)">Search</button>
+      </div>
+    </div>
+
+    <div class="body-container">
+        <div id="left-panel">
+          <h2 id="filters-header" class="header-container">
+            <span class="left-text">Filter By:</span>
+            <a href="#" id="reset-all-link" class="hidden" onclick="handleReset(event)">reset all</a>
+          </h2>
+          <div id="search-terms-display" class="hidden">
+            <h3>Search By:&nbsp;</h3><h3 id="search-terms" class="left-text"></h3>
+            <span id="clear-search" onclick="clearSearch()">x</span> 
+          </div>
+          <%- filtersHtml %>
+        </div>
+        <div id="right-panel">
+          <h2 id="results-top-label" class="header-container">
+            <span>Showing Results&nbsp;</span>
+            <span id="results-start">1</span>
+            <span>&nbsp;-&nbsp;</span>
+            <span id="results-end">25</span>
+            <span>&nbsp;of&nbsp;</span>
+            <span id="results-count" class="left-text"><%= resultsCount %></span>
+            <a class="previous-link no-wrap hidden" href="#" onclick="pageIndex--; submitQuery(event)">&lt; previous</a>
+            <a class="next-link no-wrap" href="#" onclick="pageIndex++; submitQuery(event)">next &gt;</a>
+          </h2>
+          <div id="search-results">
+            <%- resultsHtml %>
+          </div>
+          <div id="results-bottom-label">
+            <a class="previous-link no-wrap hidden" href="#" onclick="pageIndex--; submitQuery(event)">&lt; previous</a>
+            <p>Showing Results 1 - 25 of <%= resultsCount %></p>
+            <a class="next-link no-wrap>" href="#" onclick="pageIndex++; submitQuery(event)">next &gt;</a>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div id="update-modal" class="overlay">
+    <div class="modal">
+      <h2>Report Inaccuracy</h2>
+      <p id="update-title" class="form-description">Resource Info</p>
+      <form id="update-form">
+        <input type="hidden" name="formName" value="updateExisting">
+        <input type="hidden" name="updateId" value="">
+        <input type="hidden" name="updateTitle" value="">
+        <textarea name="updateText" placeholder="Please specify what information needs to be changed." style="height:100px" maxlength="300"></textarea>
+        <div class="buttons">
+            <button type="reset" class="btn btn-cancel" onclick="$('#update-modal').fadeOut(300)">Cancel</button>
+            <button type="submit" class="btn btn-submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="suggestion-modal" class="overlay">
+    <div class="modal">
+      <h2>Suggest a New Resource for CLE</h2>
+      <p class="form-description">Submit suggestions here, and your suggestion will be reviewed for addition by the system administrator.</p>
+      <form id="suggestion-form">
+        <input type="hidden" name="formName" form="suggestion-form" value="suggestNew">
+        <textarea type="text" name="title" placeholder="What is the name of the resource?" style="height:25px" maxlength="100"></textarea>
+        <textarea type="text" name="county" placeholder="What county or counties does it serve?" style="height:25px" maxlength="100"></textarea>
+        <textarea type="text" name="description" placeholder="Briefly describe what services or information are provided there." style="height:100px" maxlength="500"></textarea>
+        <textarea type="text" name="contacts" placeholder="List the website, phone, and/or address. Please make a note if there are multiple locations." style="height:60px" maxlength="300"></textarea>
+        <div class="buttons">
+            <button type="reset" class="btn btn-cancel" onclick="$('#suggestion-modal').fadeOut(300)">Cancel</button>
+            <button type="submit" class="btn btn-submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <%_ if (isAdmin) { _%>
+    <div id="add-new-resource-modal" class="overlay"></div>
+    <div id="confirmation-modal" class="overlay">
+      <div class="modal">
+        <h2>Are you sure you want to delete:</h2>
+        <h3 id="delete-title"></h3>
+        <h2>You cannot un-delete.</h2>
+        <div class="buttons">
+          <button type="reset" class="btn btn-cancel" onclick="$('#confirmation-modal').fadeOut(300)">Cancel</button>
+          <button id="confirm-delete" type="submit" class="btn btn-submit">Submit</button>
+        </div>
+      </div>
+    </div>
+  <%_ } _%>
+</body>
+<script id="main-scripts" src="js/scripts.js"></script>
+<%_ if (isAdmin) { _%>
+  <script id="admin-scripts" src="js/admin-scripts.js"></script>
+<%_ } _%>
+<div class="message-box hidden" id="messageBox">
+  Form submitted successfully.
+</div>
+</html>

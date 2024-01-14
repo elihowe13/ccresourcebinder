@@ -1,0 +1,22 @@
+{
+  "name": "cle-binder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cookie-session": "^2.0.0",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.4",
+    "passport": "^0.5.3",
+    "passport-local": "^1.0.0",
+    "passport-microsoft": "^1.0.0"
+  }
+}

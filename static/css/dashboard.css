@@ -1,0 +1,144 @@
+
+
+.edit-filters-container {
+    display: flex;
+}
+
+.ui-menu {
+    width: fit-content;
+    margin-right: 15px;
+}
+
+.ui-menu-item {
+    padding: 0 10px;
+}
+
+.ui-menu-item:first-child {
+    margin-top: 10px;
+}
+
+.ui-menu-item:last-child {
+    margin-bottom: 10px;
+}
+
+.ui-menu-item.highlight {
+    background-color: #5A8D9F;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse; 
+    background-color: white; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+    border: 1px solid #ddd;
+    font-size: 0.9em; 
+}
+
+.table thead {
+    background-color: #f9f9f9; 
+    border-bottom: 2px solid #ddd; 
+}
+
+.table thead th {
+    text-align: left; 
+    padding: 10px; 
+    font-weight: bold; 
+}
+
+.table tbody td {
+    position: relative;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    transition: max-height 0.3s ease;
+}
+
+.table tbody td.wrap-text {
+    white-space: normal;
+    max-height: none;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+    background-color: #efefef;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table img {
+    width: 16px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+#edit-resource-modal .modal {
+    width: 800px;
+}
+
+/* specific for updates table */
+
+/* title */
+#updates thead th:nth-child(1), #updates tbody td:nth-child(1) {
+    max-width: 350px; 
+}
+/* inaccuracy */
+#updates thead th:nth-child(2), #updates tbody td:nth-child(2) {
+    min-width: 350px;
+    max-width: 350px;
+}
+/* edit button */
+#updates thead th:nth-child(3), #updates tbody td:nth-child(3) {
+    text-align: center;
+    min-width: 50px;
+}
+/* timestamp */
+#updates thead th:nth-child(4), #updates tbody td:nth-child(4) {
+    max-width: 180px;
+}
+/* delete button */
+#updates thead th:nth-child(5), #updates tbody td:nth-child(5) {
+    text-align: center;
+    min-width: 70px;
+    max-width: 70px;
+}
+/* resource id */
+#updates thead th:nth-child(6), #updates tbody td:nth-child(6) {
+    min-width: 100px;
+}
+
+/* specific for the suggestions table */
+
+/* county */
+#suggestions thead th:nth-child(1), #suggestions tbody td:nth-child(1) {
+    max-width: 100px; 
+}
+/* title */
+#suggestions thead th:nth-child(2), #suggestions tbody td:nth-child(2) {
+    max-width: 300px;
+}
+/* description */
+#suggestions thead th:nth-child(3), #suggestions tbody td:nth-child(3) {
+    max-width: 350px;
+}
+/* contacts */
+#suggestions thead th:nth-child(4), #suggestions tbody td:nth-child(4) {
+    max-width: 300px;
+}
+/* timestmap */
+#suggestions thead th:nth-child(5), #suggestions tbody td:nth-child(5) {
+    max-width: 180px;
+}
+/* delete button */
+#suggestions thead th:nth-child(6), #suggestions tbody td:nth-child(6) {
+    text-align: center;
+    min-width: 70px;
+    max-width: 70px;
+}

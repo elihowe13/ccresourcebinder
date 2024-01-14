@@ -1,0 +1,48 @@
+<%_ for (resultItem of paginatedResults) { _%>
+    <%_ let regionTag _%>
+    <%_ if (resultItem["City"] && resultItem["City"] != "") { _%>
+    <%_ regionTag = resultItem["County"].join(", ") + " - " + resultItem["City"].join(", ") } else { _%>
+    <%_ regionTag = resultItem["County"].join(", ") }  _%>
+    <div id="<%= resultItem._id %>" class="result-item">
+        <div class="tags-container">
+            <p class="tag"><%= regionTag %></p>
+            <p class="tag"><%= resultItem["Resource Type"] %></p>
+        </div>
+        <h3 class="resource-title"><%= resultItem.title %></h3>
+        <p class="resource-description"><%= resultItem.description %></p>
+        <div class="contacts-container">
+            <%_ for ( object of resultItem.contacts ) { _%>
+                <%_ if (object.contact_type == "label") { _%>
+                    <div class="contact-item">
+                        <h4 type="<%= object.type %>"><%= object.value %></h4>
+                    </div>
+                <%_ } _%>
+                <%_ if (object.contact_type == "phone") { _%>
+                    <div class="contact-item">
+                        <img src="assets/phone.svg" alt="SVG Image">
+                        <p type="<%= object.type %>"><%= object.value %></p>
+                    </div>
+                <%_ } _%>
+                <%_ if (object.contact_type == "address") { _%>
+                    <div class="contact-item">
+                        <img src="assets/pin.svg" alt="SVG Image">
+                        <p type="<%= object.type %>"><%= object.value %></p>
+                    </div>
+                <%_ } _%>
+                <%_ if (object.contact_type == "website") { _%>
+                    <div class="contact-item">
+                        <img src="assets/globe.svg" alt="SVG Image">
+                        <a href="<%= object.value %>" target="_blank" type="<%= object.type %>"><%= object.value %></a>
+                    </div>
+                <%_ } _%>
+            <%_ } _%>
+        </div>
+        <div class="bottom-links-container">
+            <%_ if (isAdmin) { _%>
+                <a href="#" class="edit-link" onclick="enableEditResource(event)">Edit Resource</a>
+            <%_ } else { _%>
+                <a href="#" class="update-link" onclick="openUpdateModal(event)">Report Inaccuracy</a>
+            <%_ } _%>
+        </div>
+    </div>
+<%_ } _%>

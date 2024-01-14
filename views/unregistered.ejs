@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/login.css" type="text/css">
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <title>Unregistered User</title>
+</head>
+<body>
+    <div class="container">
+        <div class="centered-container">
+            <h1>Whoops!</h1>
+            <h3>It looks like you're not registered to use certain features of this app.<br>Speak to the system adminstrator to be given privileges.</h3>
+            <h2 id="countdown"></h2>
+        </div>
+    </div>
+</body>
+<script>
+    let timer = 5;
+
+    function updateCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    countdownElement.textContent = `Redirecting you in ${timer} seconds`;
+    }
+
+    function startCountdown() {
+    updateCountdown();
+
+    const countdownInterval = setInterval(() => {
+        timer--;
+
+        if (timer < 0) {
+
+        clearInterval(countdownInterval); 
+        window.location.href = '/';
+        } else {
+
+        updateCountdown();
+        }
+    }, 1000);
+    }
+
+    startCountdown();
+</script>
+</html>

@@ -1,0 +1,59 @@
+<div class="tags-container">
+<%_ for (filter of filters) { _%>
+    <%_ const category = filter.filter_category; _%>
+    <%_ const options = resourceInfo[category]; _%>
+    <%_ if (Array.isArray(options)) { _%>
+        <%_ for (option of options) { _%>
+            <p class="tag editable" category="<%= category %>"><%= option %></p>
+        <%_ } _%>
+    <%_ } _%>
+        <p class="tag" style="font-weight: bold;" category="<%= category %>" onclick="tagAdd(event)">(+) <%= category %></p>
+<%_ } _%>
+</div>
+<h3 class="resource-title editable" category="Title"><%= resourceInfo.title %></h3>
+<p class="resource-description editable" category="Description"><%= resourceInfo.description %></p>
+<div class="contacts-container sortable">
+    <%_ for ( object of resourceInfo.contacts ) { _%>
+        <%_ const index = resourceInfo.contacts.indexOf(object) _%>
+        <%_ if (object.contact_type == "label") { _%>
+            <div class="contact-item">
+                <h4 class="editable" type="<%= object.contact_type %>"><%= object.value %></h4>
+            </div>
+        <%_ } _%>
+        <%_ if (object.contact_type == "phone") { _%>
+            <div class="contact-item">
+                <img src="/assets/phone.svg" alt="SVG Image">
+                <p class="editable" type="<%= object.contact_type %>"><%= object.value %></p>
+            </div>
+        <%_ } _%>
+        <%_ if (object.contact_type == "address") { _%>
+            <div class="contact-item">
+                <img src="/assets/pin.svg" alt="SVG Image">
+                <p class="editable" type="<%= object.contact_type %>"><%= object.value %></p>
+            </div>
+        <%_ } _%>
+        <%_ if (object.contact_type == "website") { _%>
+            <div class="contact-item">
+                <img src="/assets/globe.svg" alt="SVG Image">
+                <a href="<%= object.value %>" target="_blank" class="editable" type="<%= object.contact_type %>"><%= object.value %></a>
+            </div>
+        <%_ } _%>
+    <%_ } _%>
+    <div class="add-new-contact">
+        <select  class="contact-type-selector">
+            <option selected hidden value="">Add New Contact</option>
+            <option value="label">Label</option>
+            <option value="phone">Phone</option>
+            <option value="address">Address</option>
+            <option value="website">Website</option>
+            <option value="sort">Drag+Drop Items</option>
+        </select>
+        <button type="button" class="btn btn-cancel disable-drag-drop">Disable Drag+Drop</button>
+    </div>
+</div>
+<div class="buttons">
+    <button type="button" class="btn btn-delete delete-resource" onclick="openConfirmationModal(event)">Delete</button>
+    <button type="button" class="btn btn-cancel cancel-edit">Cancel</button>
+    <button type="button" class="btn btn-submit submit-edit" onclick="submitEditOrNew(event)">Submit</button>
+</div>
+

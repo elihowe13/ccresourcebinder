@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/css/main.css"> 
+    <link rel="stylesheet" href="/css/dashboard.css"> 
+</head>
+<body>
+    <div class="container">
+        <div class="header-links">
+            <a href="/auth/logout" id="logout-link"><%= user.username %> (logout)</a>
+            <span>&nbsp;|&nbsp;</span>
+            <a href="/" id="main-page-link">Resource Binder</a>
+            <span>&nbsp;|&nbsp;</span>
+            <a href="#" id="add-new-link" onclick="openAddResourceModal(event)">Add New Resource</a>
+        </div>
+        <div class="title-container">
+            <h1>CLE Resource Binder</h1>
+        </div>
+        <h2>Flagged for Inaccuracy</h2>
+        <%_ if (updates.length == 0) { _%>
+            <p>None at this time.</p>
+        <%_ } else { _%>
+        <div class="table-responsive">
+            <table id="updates" class="table">
+                <thead>
+                <tr>
+                    <th>Resource Title</th>
+                    <th>Reported Inaccuracy</th>
+                    <th>Edit</th>
+                    <th>Timestamp</th>
+                    <th>Delete</th>
+                    <th>Resource ID</th>
+                </tr>
+                </thead>
+                <tbody>
+                <%_ for (update of updates) { _%>
+                    <tr id="<%= update._id %>">
+                    <td><%= update.resource_title %></td>
+                    <td data-content="<%= update.update_text %>"><%= update.update_text %></td>
+                    <td><img src="/assets/cog.svg" alt="SVG Image" onclick="openEditModal('<%- update.resource_id %>')"></td>
+                    <td><%= update.timestamp %></td>
+                    <td><img src="/assets/wastebin.svg" alt="SVG Image" onclick="deleteDocument(event, 'Update')"></td>
+                    <td><%= update.resource_id %></td>
+                    </tr>
+                <%_ } _%>
+                </tbody>
+            </table>
+        </div>
+        <%_ } _%>
+        <h2>New Resource Suggestions</h2>
+        <%_ if (suggestions.length == 0) { _%>
+            <p>None at this time.</p>
+        <%_ } else { _%>
+        <div class="table-responsive">
+            <table id="suggestions" class="table">
+                <thead>
+                <tr>
+                    <th>County</th>
+                    <th>Resource Name</th>
+                    <th>Description</th>
+                    <th>Contact[s]</th>
+                    <th>Timestamp</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <%_ for (suggestion of suggestions) { _%>
+                    <tr id="<%= suggestion._id %>">
+                    <td><%= suggestion.county %></td>
+                    <td data-content="<%= suggestion.title %>"><%= suggestion.title %></td>
+                    <td data-content="<%= suggestion.description %>"><%= suggestion.description %></td>
+                    <td data-content="<%= suggestion.contacts %>"><%= suggestion.contacts %></td>
+                    <td><%= suggestion.timestamp %></td>
+                    <td><img src="/assets/wastebin.svg" alt="SVG Image" onclick="deleteDocument(event, 'Suggestion')"></td>
+                    </tr>
+                <%_ } _%>
+                </tbody>
+            </table>
+        </div>
+        <%_ } _%>
+        <h2>Edit Filters</h2>
+        <div class="edit-filters-container">
+            <ul id="filter-category-menu">
+                <%_ for (filter of filters) { _%>
+                    <li id="<%= filter._id %>" class="editable" onclick="enableEditFilter(event)"><%= filter.filter_category %></li>
+                <%_ } _%>
+            </ul>
+            <div id="filter-options"></div>
+            <div id="filter-edit-toolbar">
+                <label><input id="display-filter" type="checkbox" class="checkbox" name="displayFilter" onchange="submitFilterEdit(event)">Display This Filter</label>
+            </div>
+        </div>
+    </div>
+    <div id="edit-resource-modal" class="overlay">
+        <div class="result-item modal"></div>
+    </div>
+    <div id="add-new-resource-modal" class="overlay"></div>
+    <div id="confirmation-modal" class="overlay">
+      <div class="modal">
+        <h2>Are you sure you want to delete:</h2>
+        <h3 id="delete-title"></h3>
+        <h2>You cannot un-delete.</h2>
+        <div class="buttons">
+          <button type="reset" class="btn btn-cancel" onclick="$('#confirmation-modal').fadeOut(300)">Cancel</button>
+          <button id="confirm-delete" type="submit" class="btn btn-submit">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="message-box hidden" id="messageBox">
+        Form submitted successfully.
+    </div>
+</body>
+<script id="admin-scripts" src="/js/admin-scripts.js"></script>
+<script id="dashboard-scripts" src="/js/dashboard-scripts.js"></script>
+</html>

@@ -1,0 +1,42 @@
+<div class="result-item add-new-modal modal">
+    <div class="tags-container">
+        <%_ for (let i = 0; i < filters.length; i ++) { _%>
+            <%_ const key = filters[i].filter_category; _%>
+            <p class="tag" style="font-weight: bold;" category="<%= key %>" onclick="tagAdd(event)">(+) <%= key %></p>
+        <%_ } _%>
+    </div>
+    <h3 class="resource-title editable" category="Title">Resource Name</h3>
+    <p class="resource-description editable" category="Description">Description goes here!</p>
+    <div class="contacts-container sortable">
+        <div class="contact-item">
+            <h4 class="editable" type="label">Label (delete text to remove)</h4>
+        </div>
+        <div class="contact-item">
+            <img src="/assets/phone.svg" alt="SVG Image">
+            <p class="editable" type="phone">Phone</p>
+        </div>
+        <div class="contact-item">
+            <img src="/assets/pin.svg" alt="SVG Image">
+            <p class="editable" type="address">Address</p>
+        </div>
+        <div class="contact-item">
+            <img src="/assets/globe.svg" alt="SVG Image">
+            <a href="#" target="_blank" class="editable" type="website">Website</a>
+        </div>
+        <div class="add-new-contact">
+            <select class="contact-type-selector selector-fixed">
+                <option selected hidden value="">Add New Contact</option>
+                <option value="label">Label</option>
+                <option value="phone">Phone</option>
+                <option value="address">Address</option>
+                <option value="website">Website</option>
+                <option value="sort">Drag+Drop Items</option>
+            </select>
+            <button type="button" class="btn btn-cancel disable-drag-drop">Disable Drag+Drop</button>
+        </div>
+    </div>
+    <div class="buttons">
+        <button type="button" class="btn btn-cancel cancel-edit">Cancel</button>
+        <button type="button" class="btn btn-submit submit-edit" onclick="submitEditOrNew(event, true)">Submit</button>
+    </div>
+</div>

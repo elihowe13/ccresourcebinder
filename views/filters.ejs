@@ -1,0 +1,31 @@
+<!-- filters.ejs -->
+<%_ for (i = 0; i < filters.length; i ++) { _%>
+    <%_ const collapsed = (i != 0) ? 'collapsed':''; _%>
+    <%_ const category = filters[i].filter_category _%>
+    <%_ const selected = filters[i].selected _%>
+    <%_ const values = filters[i].values _%>
+    <div class="filter-field <%= collapsed %>" category="<%= category %>">
+        <div class="subheading-container" onclick="if (event.target.tagName != 'A') {$(event.target).closest('.filter-field').toggleClass('collapsed');}">
+            <h3 class="filter-category"><%= category %></h3>
+            <a href="#" class="reset-link hidden" onclick="handleReset(event)">(reset)</a>
+            <div class="chevron">&lt;</div>
+        </div>
+        <form id="<%= category %>" class="checkbox-form">
+            <%_ for (let j = 0; j < values.length; j++) { _%>
+                <%_ const label = values[j] ? values[j] : "Not Specified"; _%>
+                <%_ const isSelected = selected[j] ? 'checked' : ''; _%>
+                <label><input type="checkbox" class="checkbox"  name="<%= category %>" value="<%= values[j] %>" onchange="submitQuery(event)" <%- isSelected %> ><%= label %></label>
+            <%_ } _%> 
+        </form>
+    </div>
+<%_ } _%>
+<div class="filter-field">
+    <div id="page-length-container">
+        <h3>Results per page:&nbsp;</h3>
+        <select id="page-length-selector" class="page-length-selector">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option selected value="25">25</option>
+        </select>
+    </div>
+</div>
