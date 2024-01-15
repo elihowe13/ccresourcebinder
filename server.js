@@ -4,9 +4,6 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.static('static'));
 
-// keys are modularized to protect when uploading to github 
-const keys = require('./config/keys');
-
 // set views directory and engine 
 const ejs = require('ejs');
 app.set('views', __dirname + '/views'); 
@@ -21,7 +18,7 @@ app.use(bodyParser.json());
 const cookieSession = require('cookie-session');
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000, // max age of cookie in milliseconds (1 day)
-    keys: [keys.session.cookieKey]
+    keys: [process.env.cookieKey]
 }))
 
 // passport setup 

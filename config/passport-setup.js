@@ -1,7 +1,6 @@
 const passport = require('passport');
 const MicrosoftStrategy = require('passport-microsoft').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
-const keys = require('./keys')
 const User = require('../models/user-model');
 
 passport.serializeUser((user, done) => {
@@ -27,8 +26,8 @@ passport.deserializeUser(async (id, done) => {
 passport.use(
     new MicrosoftStrategy({
         // options for strategy 
-        clientID: keys.microsoft.clientId,
-        clientSecret: keys.microsoft.clientSecret,
+        clientID: process.env.clientId,
+        clientSecret: process.env.clientSecret,
         callbackURL: 'http://localhost:3000/auth/microsoft/redirect',
         scope: ['user.read']
     }, async (accessToken, refreshToken, profile, done) => {
@@ -65,13 +64,13 @@ passport.use(
 passport.use(
     new LocalStrategy((username, password, done) => {
 
-        usernamePass = username == keys.demo.username;
-        passwordPass = password == keys.demo.password;
+        usernamePass = username == process.env.demoUsername;
+        passwordPass = password == process.env.demoPassword;
 
         user = {
             username,
             password,
-            id: keys.demo.id
+            id: process.env.demoId
         }
 
         if (usernamePass && passwordPass) {

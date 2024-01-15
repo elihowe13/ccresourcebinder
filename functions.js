@@ -1,9 +1,8 @@
 const ejs = require('ejs');
-const keys = require('./config/keys');
 
 // MongoDB database setup and connect
 const mongoose = require('mongoose');
-mongoose.connect(keys.mongodb.dbURI);
+mongoose.connect(process.env.dbURI);
 
 // MongoDB schemata 
 const { Resource, Filter } = require('./models/resource-filter-model');
